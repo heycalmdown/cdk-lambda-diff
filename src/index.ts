@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { LambdaClient, GetFunctionCommand } from '@aws-sdk/client-lambda'
 import fs from 'fs'
 import path from 'path'

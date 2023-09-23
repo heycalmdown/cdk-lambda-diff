@@ -1,12 +1,12 @@
 {
   "name": "cdk-lambda-diff",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "lib/index.js",
-  "repository": "https://github.com/plugo-corp/plugo-mono",
+  "repository": "https://github.com/heycalmdown/cdk-lambda-diff",
   "scripts": {
     "prepublishOnly": "tsc",
-    "postpublish": "rm -rf lib",
+    "postpublish": "rm -rf ./dist",
     "build": "tsc"
   },
   "bin": {
@@ -17,7 +17,6 @@
   "dependencies": {
     "@aws-sdk/client-lambda": "^3.418.0",
     "@npmcli/disparity-colors": "^3.0.0",
-    "@types/colors": "^1.2.1",
     "@types/decompress": "^4.2.5",
     "@types/diff": "^5.0.5",
     "@types/node": "^20.6.3",
