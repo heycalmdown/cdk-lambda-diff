@@ -68,6 +68,10 @@ function compareFiles(targetDir: string, compareDir: string, file: string) {
     compareNodeModules(targetFilePath, compareFilePath)
     return
   }
+  if (file.endsWith('.js.map') || file.endsWith('lock.json')) {
+    console.log(`Skipping ${file}`)
+    return
+  }
 
   const targetFileContent = fs.readFileSync(targetFilePath, "utf-8")
   const compareFileContent = fs.readFileSync(compareFilePath, "utf-8")
@@ -100,9 +104,34 @@ function findFunctionAndAsset(stackName: string, funcId: string) {
   return { name, asset }
 }
 
+function listStacks() {
+  const files = fs.readdirSync('./cdk.out')
+  const stacks = files.filter(f => f.endsWith('.template.json')).map(f => f.replace('.template.json', ''))
+  console.log(stacks)
+}
+
+function listFunctions(stackName: string) {
+  const file = fs.readFileSync(`./cdk.out/${stackName}.template.json`, 'utf-8')
+  const stack = JSON.parse(file)
+  const funcKeys = Object.keys(stack.Resources).filter(k => {
+    if (stack.Resources[k].Type !== 'AWS::Lambda::Function') return false
+    return true
+  })
+  const functions = funcKeys.map(k => stack.Resources[k].Properties.FunctionName)
+  console.log(functions)
+}
+
 async function main() {
   const stackName = process.argv[2] || 'UnknownStack'
   const funcId = process.argv[3] || 'UnknownFunction'
+  if (stackName === '--list') {
+    listStacks()
+    return
+  }
+  if (funcId === '--list') {
+    listFunctions(stackName)
+    return
+  }
 
   const { name, asset } = findFunctionAndAsset(stackName, funcId)
   if (!name || !asset) {
