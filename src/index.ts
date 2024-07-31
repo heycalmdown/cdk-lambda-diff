@@ -117,8 +117,7 @@ function listFunctions(stackName: string) {
     if (stack.Resources[k].Type !== 'AWS::Lambda::Function') return false
     return true
   })
-  const functions = funcKeys.map(k => stack.Resources[k].Properties.FunctionName)
-  console.log(functions)
+  console.log(funcKeys)
 }
 
 async function main() {
